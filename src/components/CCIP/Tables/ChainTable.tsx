@@ -7,14 +7,19 @@ import { getExplorerAddressUrl } from "~/features/utils/index.ts"
 import { drawerContentStore } from "../Drawer/drawerStore.ts"
 import LaneDrawer from "../Drawer/LaneDrawer.tsx"
 import { Environment, Version, LaneFilter } from "~/config/data/ccip/types.ts"
-import { getLane, getOperationalState } from "~/config/data/ccip/data.ts"
-import { ExplorerInfo, SupportedChain } from "~/config/types.ts"
-import { clsx } from "~/lib/clsx/clsx.ts"
+import { getLane } from "~/config/data/ccip/data.ts"
+import { ExplorerInfo, SupportedChain, ChainType } from "~/config/types.ts"
 import SeeMore from "../SeeMore/SeeMore.tsx"
+import { Tooltip } from "~/features/common/Tooltip/Tooltip.tsx"
 
 interface TableProps {
   environment: Environment
-  sourceNetwork: { name: string; logo: string; key: string }
+  sourceNetwork: {
+    name: string
+    logo: string
+    key: string
+    chainType: ChainType
+  }
   lanes: {
     name: string
     logo: string
@@ -32,14 +37,12 @@ interface TableProps {
   explorer: ExplorerInfo
 }
 
-const BEFORE_SEE_MORE = 12 // Number of networks to show before the "See more" button, 7 rows
+const BEFORE_SEE_MORE = 12
 
 function ChainTable({ lanes, explorer, sourceNetwork, environment }: TableProps) {
   const [inOutbound, setInOutbound] = useState<LaneFilter>(LaneFilter.Outbound)
   const [search, setSearch] = useState("")
   const [seeMore, setSeeMore] = useState(lanes.length <= BEFORE_SEE_MORE)
-  const [statuses, setStatuses] = useState<Record<string, string>>({})
-  const [loadingStatuses, setLoadingStatuses] = useState<boolean>(true)
 
   useEffect(() => {
     if (search.length > 0) {
@@ -47,20 +50,9 @@ function ChainTable({ lanes, explorer, sourceNetwork, environment }: TableProps)
     }
   }, [search])
 
-  useEffect(() => {
-    const fetchOperationalState = async (network) => {
-      if (network) {
-        const result = await getOperationalState(network)
-        setStatuses(result)
-        setLoadingStatuses(false)
-      }
-    }
-    fetchOperationalState(sourceNetwork.key)
-  }, [sourceNetwork])
-
   return (
     <>
-      <div className="ccip-table__filters">
+      <div className="ccip-table__filters ccip-table__filters--chain">
         <Tabs
           tabs={[
             {
@@ -74,15 +66,48 @@ function ChainTable({ lanes, explorer, sourceNetwork, environment }: TableProps)
           ]}
           onChange={(key) => setInOutbound(key as LaneFilter)}
         />
-        <TableSearchInput search={search} setSearch={setSearch} />
+        <div className="ccip-table__filters__actions">
+          <div className="ccip-table__filters__search-container">
+            <TableSearchInput search={search} setSearch={setSearch} />
+          </div>
+          <a
+            className="button secondary ccip-table__filters__external-button"
+            href="https://ccip.chain.link/status"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/assets/icons/external-button-link.svg"
+              alt=""
+              className="ccip-table__filters__external-icon"
+              role="presentation"
+            />
+            View lane status
+          </a>
+        </div>
       </div>
       <div className="ccip-table__wrapper">
         <table className="ccip-table">
           <thead>
             <tr>
               <th>{inOutbound === LaneFilter.Outbound ? "Destination" : "Source"} network</th>
-              <th>{inOutbound === LaneFilter.Outbound ? "OnRamp" : "OffRamp"} address</th>
-              <th>Status</th>
+              <th style={{ textAlign: "right" }}>
+                {inOutbound === LaneFilter.Outbound ? (
+                  <>
+                    OnRamp address
+                    {sourceNetwork.chainType === "solana" && (
+                      <Tooltip
+                        label=""
+                        tip="Same as Router"
+                        labelStyle={{ marginLeft: "8px" }}
+                        style={{ display: "inline-block", verticalAlign: "middle" }}
+                      />
+                    )}
+                  </>
+                ) : (
+                  "OffRamp address"
+                )}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -92,9 +117,9 @@ function ChainTable({ lanes, explorer, sourceNetwork, environment }: TableProps)
               .map((network, index) => (
                 <tr key={index}>
                   <td>
-                    <div
+                    <button
+                      type="button"
                       className="ccip-table__network-name"
-                      role="button"
                       onClick={() => {
                         const laneData = getLane({
                           sourceChain: sourceNetwork.key as SupportedChain,
@@ -118,12 +143,16 @@ function ChainTable({ lanes, explorer, sourceNetwork, environment }: TableProps)
                           />
                         ))
                       }}
+                      aria-label={`View lane details for ${network.name}`}
                     >
-                      <img src={network.logo} alt={network.name} className="ccip-table__logo" />
+                      <img src={network.logo} alt={`${network.name} blockchain logo`} className="ccip-table__logo" />
                       {network.name}
-                    </div>
+                    </button>
                   </td>
-                  <td data-clipboard-type={inOutbound === LaneFilter.Outbound ? "onramp" : "offramp"}>
+                  <td
+                    style={{ textAlign: "right" }}
+                    data-clipboard-type={inOutbound === LaneFilter.Outbound ? "onramp" : "offramp"}
+                  >
                     <Address
                       address={inOutbound === LaneFilter.Outbound ? network.onRamp?.address : network.offRamp?.address}
                       endLength={4}
@@ -131,26 +160,6 @@ function ChainTable({ lanes, explorer, sourceNetwork, environment }: TableProps)
                         (inOutbound === LaneFilter.Outbound ? network.onRamp?.address : network.offRamp?.address) || ""
                       )}
                     />
-                  </td>
-                  <td>
-                    {loadingStatuses ? (
-                      "Loading..."
-                    ) : (
-                      <span
-                        className={clsx(
-                          "ccip-table__status",
-                          `ccip-table__status-${statuses[network.key]?.toLocaleLowerCase() || "none"}`
-                        )}
-                      >
-                        {statuses[network.key]?.toLocaleLowerCase() && (
-                          <img
-                            src={`/assets/icons/ccip-${statuses[network.key]?.toLocaleLowerCase()}.svg`}
-                            alt="Cursed"
-                          />
-                        )}
-                        {statuses[network.key]?.toLocaleLowerCase() || "Status unavailable"}
-                      </span>
-                    )}
                   </td>
                 </tr>
               ))}

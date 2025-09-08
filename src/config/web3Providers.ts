@@ -88,8 +88,8 @@ export const chainToProvider: Record<SupportedChain, () => Provider> = {
   LENS_MAINNET: () => new JsonRpcProvider("https://rpc.lens.xyz"),
   BERACHAIN_MAINNET: () => new JsonRpcProvider("https://rpc.berachain.com"),
   BERACHAIN_BARTIO: () => new JsonRpcProvider("https://bartio.rpc.berachain.com"),
-  HYPERLIQUID_MAINNET: () => new JsonRpcProvider("https://rpc.hyperliquid.xyz/evm"),
-  HYPERLIQUID_TESTNET: () => new JsonRpcProvider("https://rpc.hyperliquid-testnet.xyz/evm"),
+  HYPEREVM_MAINNET: () => new JsonRpcProvider("https://hyperevmscan.io/"),
+  HYPEREVM_TESTNET: () => new JsonRpcProvider("https://hyperevmscan.io/"),
   MERLIN_TESTNET: () => new JsonRpcProvider("https://testnet-rpc.merlinchain.io/"),
   MERLIN_MAINNET: () => new JsonRpcProvider("https://rpc.merlinchain.io"),
   FRAXTAL_TESTNET: () => new JsonRpcProvider("https://rpc.testnet.frax.com"),
@@ -109,13 +109,15 @@ export const chainToProvider: Record<SupportedChain, () => Provider> = {
   MIND_NETWORK_TESTNET: () => new JsonRpcProvider("https://rpc-testnet.mindnetwork.xyz"),
   MIND_NETWORK_MAINNET: () => new JsonRpcProvider("https://rpc-mainnet.mindnetwork.xyz"),
   MEGAETH_TESTNET: () => new JsonRpcProvider("https://carrot.megaeth.com/rpc"),
-  "0G_NEWTON_TESTNET": () => new JsonRpcProvider("https://evmrpc-testnet.0g.ai"),
+  "0G_GALILEO_TESTNET": () => new JsonRpcProvider("https://evmrpc-testnet.0g.ai/"),
   TAIKO_MAINNET: () => new JsonRpcProvider("https://rpc.mainnet.taiko.xyz"),
-  TAIKO_TESTNET: () => new JsonRpcProvider("https://rpc.hekla.taiko.xyz"),
-  PLUME_TESTNET: () => new JsonRpcProvider("https://testnet-rpc.plumenetwork.xyz"),
+  TAIKO_HEKLA: () => new JsonRpcProvider("https://rpc.hekla.taiko.xyz"),
+  PLUME_SEPOLIA: () => new JsonRpcProvider("https://testnet-rpc.plumenetwork.xyz"),
   PLUME_MAINNET: () => new JsonRpcProvider("https://phoenix-rpc.plumenetwork.xyz"),
+  SOLANA_DEVNET: () => new JsonRpcProvider("https://api.devnet.solana.com"),
+  SOLANA_MAINNET: () => new JsonRpcProvider("https://api.mainnet-beta.solana.com"),
   TRON_MAINNET: () => new JsonRpcProvider("https://api.trongrid.io/jsonrpc"),
-  TRON_TESTNET: () => new JsonRpcProvider("https://api.shasta.trongrid.io/jsonrpc"),
+  TRON_SHASTA: () => new JsonRpcProvider("https://api.shasta.trongrid.io/jsonrpc"),
   ABSTRACT_MAINNET: () => new JsonRpcProvider("https://api.mainnet.abs.xyz"),
   ABSTRACT_TESTNET: () => new JsonRpcProvider("https://api.testnet.abs.xyz"),
   LISK_MAINNET: () => new JsonRpcProvider("https://rpc.api.lisk.com"),
@@ -128,6 +130,21 @@ export const chainToProvider: Record<SupportedChain, () => Provider> = {
   SUPERSEED_TESTNET: () => new JsonRpcProvider("https://sepolia.superseed.xyz"),
   METAL_MAINNET: () => new JsonRpcProvider("https://rpc.metall2.com"),
   METAL_TESTNET: () => new JsonRpcProvider("https://testnet.rpc.metall2.com"),
+  ROOTSTOCK_MAINNET: () => new JsonRpcProvider("https://public-node.rsk.co"),
+  ROOTSTOCK_TESTNET: () => new JsonRpcProvider("https://public-node.testnet.rsk.co"),
+  GRAVITY_MAINNET: () => new JsonRpcProvider("https://rpc.gravity.xyz"),
+  GRAVITY_TESTNET: () => new JsonRpcProvider("https://rpc-sepolia.gravity.xyz"),
+  ETHERLINK_MAINNET: () => new JsonRpcProvider("https://node.mainnet.etherlink.com"),
+  ETHERLINK_TESTNET: () => new JsonRpcProvider("https://node.ghostnet.etherlink.com"),
+  OPBNB_MAINNET: () => new JsonRpcProvider("https://opbnb-mainnet-rpc.bnbchain.org"),
+  OPBNB_TESTNET: () => new JsonRpcProvider("https://opbnb-testnet-rpc.bnbchain.org"),
+  JANCTION_MAINNET: () => new JsonRpcProvider("https://rpc.janction.io"),
+  JANCTION_TESTNET: () => new JsonRpcProvider("https://rpc_testnet.janction.io"),
+  NEO_X_MAINNET: () => new JsonRpcProvider("https://mainnet-1.rpc.banelabs.org"),
+  NEO_X_TESTNET: () => new JsonRpcProvider("https://testnet.rpc.banelabs.org"),
+  KATANA_TATARA: () => new JsonRpcProvider("https://rpc.tatara.katanarpc.com"),
+  KATANA_MAINNET: () => new JsonRpcProvider("https://rpc.katanarpc.com"),
+  BOTANIX_MAINNET: () => new JsonRpcProvider("https://rpc.botanix.org"),
 }
 
 export const getRpcUrlForChain = (chain: SupportedChain): string => {
@@ -142,6 +159,8 @@ export const getRpcUrlForChain = (chain: SupportedChain): string => {
   return rpcUrl
 }
 
+// TODO: This is a temporary function to get a provider for a chain depending on chainType
+// Supports only evm chains for now
 export const getProviderForChain = (chain: SupportedChain): JsonRpcProvider => {
   const rpcUrl = getRpcUrlForChain(chain)
   const chainId = getChainId(chain)
@@ -156,7 +175,7 @@ export const getProviderForChain = (chain: SupportedChain): JsonRpcProvider => {
 
   // Create a Network instance for static configuration
   const network = Network.from({
-    chainId,
+    chainId: chainId as number,
     name: chain.toLowerCase(),
   })
 

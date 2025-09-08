@@ -41,7 +41,7 @@ export type SupportedTechnology =
   | "LENS"
   | "BERACHAIN"
   | "UNICHAIN"
-  | "HYPERLIQUID"
+  | "HYPEREVM"
   | "MERLIN"
   | "FRAXTAL"
   | "HEDERA"
@@ -61,6 +61,16 @@ export type SupportedTechnology =
   | "ZORA"
   | "MINT"
   | "SUPERSEED"
+  | "GRAVITY"
+  | "ETHERLINK"
+  | "OPBNB"
+  | "JANCTION"
+  | "NEO_X"
+  | "POLYGON_KATANA"
+
+export type ChainType = "evm" | "solana" | "aptos"
+
+export type ChainFamily = "evm" | "mvm" | "svm"
 
 export type SupportedChain =
   | "ETHEREUM_MAINNET"
@@ -146,8 +156,8 @@ export type SupportedChain =
   | "LENS_MAINNET"
   | "BERACHAIN_MAINNET"
   | "BERACHAIN_BARTIO"
-  | "HYPERLIQUID_MAINNET"
-  | "HYPERLIQUID_TESTNET"
+  | "HYPEREVM_MAINNET"
+  | "HYPEREVM_TESTNET"
   | "MERLIN_TESTNET"
   | "MERLIN_MAINNET"
   | "FRAXTAL_TESTNET"
@@ -164,16 +174,18 @@ export type SupportedChain =
   | "CRONOS_MAINNET"
   | "CRONOS_ZKEVM_TESTNET"
   | "CRONOS_ZKEVM_MAINNET"
-  | "0G_NEWTON_TESTNET"
+  | "0G_GALILEO_TESTNET"
   | "MIND_NETWORK_TESTNET"
   | "MIND_NETWORK_MAINNET"
   | "MEGAETH_TESTNET"
   | "TAIKO_MAINNET"
-  | "TAIKO_TESTNET"
+  | "TAIKO_HEKLA"
   | "PLUME_MAINNET"
-  | "PLUME_TESTNET"
+  | "PLUME_SEPOLIA"
+  | "SOLANA_DEVNET"
+  | "SOLANA_MAINNET"
   | "TRON_MAINNET"
-  | "TRON_TESTNET"
+  | "TRON_SHASTA"
   | "ABSTRACT_TESTNET"
   | "ABSTRACT_MAINNET"
   | "LISK_TESTNET"
@@ -186,6 +198,21 @@ export type SupportedChain =
   | "SUPERSEED_MAINNET"
   | "METAL_TESTNET"
   | "METAL_MAINNET"
+  | "ROOTSTOCK_TESTNET"
+  | "ROOTSTOCK_MAINNET"
+  | "GRAVITY_MAINNET"
+  | "GRAVITY_TESTNET"
+  | "ETHERLINK_TESTNET"
+  | "ETHERLINK_MAINNET"
+  | "OPBNB_MAINNET"
+  | "OPBNB_TESTNET"
+  | "JANCTION_MAINNET"
+  | "JANCTION_TESTNET"
+  | "NEO_X_MAINNET"
+  | "NEO_X_TESTNET"
+  | "KATANA_TATARA"
+  | "KATANA_MAINNET"
+  | "BOTANIX_MAINNET"
 
 export type ExplorerInfo = {
   baseUrl: string
@@ -195,7 +222,7 @@ export type ExplorerInfo = {
 }
 
 export type ChainInfo = {
-  chainId: number
+  chainId: number | string
   title: string
   explorer: ExplorerInfo
   nativeCurrency: {
@@ -210,6 +237,7 @@ export type Chains = Record<
   {
     title: string
     icon: string
+    chainType: ChainType
     chains: Partial<Record<SupportedChain, ChainInfo>>
   }
 >

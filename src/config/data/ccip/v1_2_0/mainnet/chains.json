@@ -1,4 +1,24 @@
 {
+  "abstract-mainnet": {
+    "armProxy": {
+      "address": "0x2edAc8B8928c4e1Ed559e619b6A8a4aaCe9Ef18A",
+      "version": "1.5.0"
+    },
+    "chainSelector": "3577778157919314504",
+    "feeTokens": ["LINK", "WETH"],
+    "registryModule": {
+      "address": "0x56c4b06A0F59AcFAAb58FEA0d7Ca4090695F683f",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x09521B0B5BB2d4406124c0207Cf551829B45f84d",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x7EEdf2DBC74924Cb1f23fC8845CD35bF18b697de",
+      "version": "1.5.0"
+    }
+  },
   "apechain-mainnet": {
     "armProxy": {
       "address": "0x768a1a3B321126A8B214d7376D48465C7f6Fa061",
@@ -25,11 +45,12 @@
       "version": "1.0.0"
     },
     "chainSelector": "6433500567565415381",
-    "feeTokens": ["LINK", "WAVAX"],
+    "feeTokens": ["GHO", "LINK", "WAVAX"],
     "registryModule": {
       "address": "0x76Aa17dCda9E8529149E76e9ffaE4aD1C4AD701B",
       "version": "1.6.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0xF4c7E640EdA248ef95972845a62bdC74237805dB",
       "version": "1.2.0"
@@ -64,6 +85,30 @@
     },
     "tokenPoolFactory": {
       "address": "0x3D276E2C2deBc581F194591750a4d04AA15D3c01",
+      "version": "1.5.1"
+    }
+  },
+  "binance-smart-chain-mainnet-opbnb-1": {
+    "armProxy": {
+      "address": "0xf7adFeB4433E09d4f652EC2c55d39e505F7c8b75",
+      "version": "1.5.0"
+    },
+    "chainSelector": "465944652040885897",
+    "feeTokens": ["LINK", "WBNB"],
+    "registryModule": {
+      "address": "0xe76d080Bc727EE62bCF53c8Cc891417357529CA1",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0xa3ca4306B9256aAB177C47A18b43593F03378976",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0xEfF5D2147F9cAcdedF80C2ee1F5320B01C664bE5",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0xA7E77BD47e2fDeE61df271E8b9206F3F1E804427",
       "version": "1.5.1"
     }
   },
@@ -112,6 +157,30 @@
     },
     "tokenPoolFactory": {
       "address": "0x5931822f394baBC2AACF4588E98FC77a9f5aa8C9",
+      "version": "1.5.1"
+    }
+  },
+  "bitcoin-mainnet-botanix": {
+    "armProxy": {
+      "address": "0x7f1310420E197B491311Ac75bF44e852f796779a",
+      "version": "1.5.0"
+    },
+    "chainSelector": "4560701533377838164",
+    "feeTokens": ["LINK", "PBTC"],
+    "registryModule": {
+      "address": "0x862e2885Ae4B2790d15A5F19bdb47bc6Bd31aaD1",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x5EE890c89B5Ae75cBC516Dd53345e38E5B39B664",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x3eD4752266fF42FECe47dB8BA1249fF3978f3E5E",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0xf8755b249ae4CB20eaB9cC0433ADc0aE01139c33",
       "version": "1.5.1"
     }
   },
@@ -174,6 +243,7 @@
       "address": "0x47Db76c9c97F4bcFd54D8872FDb848Cab696092d",
       "version": "1.6.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0x34B03Cb9086d7D758AC55af71584F81A598759FE",
       "version": "1.2.0"
@@ -338,6 +408,7 @@
       "address": "0x1f1df9f7fc939E71819F766978d8F900B816761b",
       "version": "1.6.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0x141fa059441E0ca23ce184B6A78bafD2A517DdE8",
       "version": "1.2.0"
@@ -357,11 +428,12 @@
       "version": "1.0.0"
     },
     "chainSelector": "15971525489660198786",
-    "feeTokens": ["LINK", "WETH", "GHO"],
+    "feeTokens": ["GHO", "LINK", "WETH"],
     "registryModule": {
       "address": "0xAFEd606Bd2CAb6983fC6F10167c98aaC2173D77f",
       "version": "1.6.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0x881e3A65B4d4a04dD529061dd0071cf975F58bCD",
       "version": "1.2.0"
@@ -447,30 +519,6 @@
       "version": "1.5.1"
     }
   },
-  "ethereum-mainnet-kroma-1": {
-    "armProxy": {
-      "address": "0x6E4d2dBBF8a1A943412aD451422FE11A25C781DE",
-      "version": "1.0.0"
-    },
-    "chainSelector": "3719320017875267166",
-    "feeTokens": ["LINK", "WETH"],
-    "registryModule": {
-      "address": "0xF549af21578Cfe2385FFD3488B3039fd9e52f006",
-      "version": "1.6.0"
-    },
-    "router": {
-      "address": "0xE93E8B0d1b1CEB44350C8758ed1E2799CCee31aB",
-      "version": "1.2.0"
-    },
-    "tokenAdminRegistry": {
-      "address": "0x447066676A5413682a881c63aed0F03f8ACf7E45",
-      "version": "1.5.0"
-    },
-    "tokenPoolFactory": {
-      "address": "0x5931822f394baBC2AACF4588E98FC77a9f5aa8C9",
-      "version": "1.5.1"
-    }
-  },
   "ethereum-mainnet-linea-1": {
     "armProxy": {
       "address": "0x1F8fbCf559f08FE7c4076f0d68DB861e1E27f95b",
@@ -482,6 +530,7 @@
       "address": "0x0a12ec21c43ab2b4f69693Da1b0149e7652689c0",
       "version": "1.6.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0x549FEB73F2348F6cD99b9fc8c69252034897f06C",
       "version": "1.2.0"
@@ -554,6 +603,7 @@
       "address": "0xAFEd606Bd2CAb6983fC6F10167c98aaC2173D77f",
       "version": "1.6.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0x3206695CaE29952f4b0c22a169725a865bc8Ce0f",
       "version": "1.2.0"
@@ -612,6 +662,30 @@
     },
     "tokenPoolFactory": {
       "address": "0x5931822f394baBC2AACF4588E98FC77a9f5aa8C9",
+      "version": "1.5.1"
+    }
+  },
+  "ethereum-mainnet-taiko-1": {
+    "armProxy": {
+      "address": "0x01f66BA71474d30De43d3c7B389F4019505B7F59",
+      "version": "1.5.0"
+    },
+    "chainSelector": "16468599424800719238",
+    "feeTokens": ["LINK", "WETH"],
+    "registryModule": {
+      "address": "0xaD501B68b7244fD5AddD53dE24A4eC3f6343cb89",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0xeb2502AeD3Cfd6E37e292c6B837a8FFF9a042367",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x308a2A7d13B12ba26649F381C53F7e7C60d0D9c6",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0x43DB2E5d6A83399e0530DC652286F655B18a2b07",
       "version": "1.5.1"
     }
   },
@@ -807,6 +881,31 @@
       "version": "1.5.1"
     }
   },
+  "hyperliquid-mainnet": {
+    "armProxy": {
+      "address": "0x07f15e9813FBd007d38CF534133C0838f449ecFA",
+      "version": "1.0.0"
+    },
+    "chainSelector": "2442541497099098535",
+    "feeTokens": ["LINK", "WHYPE"],
+    "registryModule": {
+      "address": "0xbAb3aBB5F29275065F2814F1f4B10Ffc1284fFEf",
+      "version": "1.5.0"
+    },
+    "rmnPermeable": false,
+    "router": {
+      "address": "0x13b3332b66389B1467CA6eBd6fa79775CCeF65ec",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0xcE44363496ABc3a9e53B3F404a740F992D977bDF",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0x1C2a560009253Bb5e7AF6e021Ea31E53ee8F2E90",
+      "version": "1.5.1"
+    }
+  },
   "lens-mainnet": {
     "armProxy": {
       "address": "0xE187a792bbf76232A307d8E44615973C849E25A0",
@@ -831,6 +930,30 @@
       "version": "1.5.1"
     }
   },
+  "lisk-mainnet": {
+    "armProxy": {
+      "address": "0x193e4f6c1A2FD8fa167c8a6e8E05564402DF6890",
+      "version": "1.5.0"
+    },
+    "chainSelector": "15293031020466096408",
+    "feeTokens": ["LINK", "WETH"],
+    "registryModule": {
+      "address": "0xb8A0D2aF11852E910fB9EBbA99E5233D29c483DA",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x0145c1fbA8a16128c1061eB9CE7eC3cadb8e30c7",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x98acD723D0E9C13d09Df4619Abec729F3434a10a",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0x85A422d0F2584E15C331b5DE225c4cAe32F9182B",
+      "version": "1.5.1"
+    }
+  },
   "mainnet": {
     "armProxy": {
       "address": "0x411dE17f12D1A34ecC7F45f49844626267c75e81",
@@ -842,6 +965,7 @@
       "address": "0x4855174E9479E211337832E109E7721d43A4CA64",
       "version": "1.6.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D",
       "version": "1.2.0"
@@ -879,6 +1003,30 @@
       "version": "1.5.1"
     }
   },
+  "metal-mainnet": {
+    "armProxy": {
+      "address": "0x87E84fc7cBD63D7e8653C660De09Fe48AB0276a8",
+      "version": "1.5.0"
+    },
+    "chainSelector": "13447077090413146373",
+    "feeTokens": ["LINK", "WETH"],
+    "registryModule": {
+      "address": "0xe34002C0d93E7B4DC84205dF6f4daD98CE44Fc89",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x020c61ECEEE0E5DC32F2503AbB6E070fa0EbBfaA",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0xc41640B959Ca2A62b9293509202D8615dC293634",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0xb128BF051D638D9b4eCF6024019a8801Ee97f748",
+      "version": "1.5.1"
+    }
+  },
   "mind-mainnet": {
     "armProxy": {
       "address": "0x4F26203d04A57A73df795DBed362d3A8d5C34D0c",
@@ -900,6 +1048,54 @@
     },
     "tokenPoolFactory": {
       "address": "0x057f63e458A835E5C83d2194CAb1c30A76dD9b74",
+      "version": "1.5.1"
+    }
+  },
+  "mint-mainnet": {
+    "armProxy": {
+      "address": "0xA84f7c3E7d1025EF1F991110B1956c024bb6Ac99",
+      "version": "1.5.0"
+    },
+    "chainSelector": "17164792800244661392",
+    "feeTokens": ["LINK", "WETH"],
+    "registryModule": {
+      "address": "0xE32c85F1A8154EBa06486F12d9639f1c2dcd240a",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x1d86012266F214a368766C2B9329FdCC75B1Ce6b",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0xfAb243379A10D8090B32BC706288c2187dbe495C",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0xEBCAd6B4C2037343Fbf4940cd8f858d9C0c0b429",
+      "version": "1.5.1"
+    }
+  },
+  "plume-mainnet": {
+    "armProxy": {
+      "address": "0x975B590aCc4aAd12f69974339B26cCE24A380031",
+      "version": "1.5.0"
+    },
+    "chainSelector": "17912061998839310979",
+    "feeTokens": ["LINK", "WPLUME"],
+    "registryModule": {
+      "address": "0xA3fb39757629D078F4593353d37644Fdec9AA46a",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x5C4f4622AD0EC4a47e04840db7E9EcA8354109af",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x01E5B2fAC7156c54f034E1767f2799fDd41B8285",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0xF41a468dBcD9f626ceB56E8691Df3d5B7bdd3015",
       "version": "1.5.1"
     }
   },
@@ -927,6 +1123,31 @@
       "version": "1.5.1"
     }
   },
+  "polygon-mainnet-katana": {
+    "armProxy": {
+      "address": "0x32270E4FA459cA47ae0334488e27ffb9bC9aB4a1",
+      "version": "1.0.0"
+    },
+    "chainSelector": "2459028469735686113",
+    "feeTokens": ["LINK", "WETH"],
+    "registryModule": {
+      "address": "0x95AdE250c01701a4C63D0893C954A510f7938Dc6",
+      "version": "1.5.0"
+    },
+    "rmnPermeable": false,
+    "router": {
+      "address": "0x7c19b79D2a054114Ab36ad758A36e92376e267DA",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x048B911A1AE5dD4f0aEE5241A30d3DEDa3501D54",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0x3A704ad3E4784b935AE029171AdCF57ee7988198",
+      "version": "1.5.1"
+    }
+  },
   "ronin-mainnet": {
     "armProxy": {
       "address": "0xceA253a8c2BB995054524d071498281E89aACD59",
@@ -948,6 +1169,30 @@
     },
     "tokenPoolFactory": {
       "address": "0xDeC8A6f06FDdA5aAE262631f37b79f182a23464B",
+      "version": "1.5.1"
+    }
+  },
+  "rootstock-mainnet": {
+    "armProxy": {
+      "address": "0x54E38BFA3584415C28228Ed4865Ed4FA5cDD013A",
+      "version": "1.5.0"
+    },
+    "chainSelector": "11964252391146578476",
+    "feeTokens": ["LINK", "WRBTC"],
+    "registryModule": {
+      "address": "0x18C441785B0052C45724fa56d00F08dd6ba01375",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0xCe7aFb0BF5F73BfDB5e9E04976eBac2005746bD0",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0xad71ac82aCFCbDD27BBd3F3eD2fA24E26E49CBE2",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0xAB70396228E973f27d190301A78Da5d5bE2675B6",
       "version": "1.5.1"
     }
   },
@@ -978,7 +1223,7 @@
   "shibarium-mainnet": {
     "armProxy": {
       "address": "0xD2bdb98dA1Ff575d091CA5b76412C23Cba88CA02",
-      "version": "1.5.0"
+      "version": "1.0.0"
     },
     "chainSelector": "3993510008929295315",
     "feeTokens": ["LINK", "WBONE"],
@@ -986,6 +1231,7 @@
       "address": "0x1f524a11d89D68a4E4b1c8A195E91Fb1d8f0B56a",
       "version": "1.6.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0xc2CA5d5C17911e4B838194b51585DdF8fe5116C1",
       "version": "1.2.0"
@@ -997,6 +1243,25 @@
     "tokenPoolFactory": {
       "address": "0x5931822f394baBC2AACF4588E98FC77a9f5aa8C9",
       "version": "1.5.1"
+    }
+  },
+  "solana-mainnet": {
+    "armProxy": {
+      "address": "RmnXLft1mSEwDgMKu2okYuHkiazxntFFcZFrrcXxYg7",
+      "version": "V1"
+    },
+    "chainSelector": "124615329519749607",
+    "feeQuoter": "FeeQPGkKDeRV1MgoYfMH6L8o3KeuYjwUZrgn4LRKfjHi",
+    "feeTokens": ["LINK", "WSOL"],
+    "poolPrograms": {
+      "BurnMintTokenPool": "41FGToCmdaWa1dgZLKFAjvmx6e6AjVTX7SVRibvsMGVB",
+      "CCTPTokenPool": "CCiTPESGEevd7TBU8EGBKrcxuRq7jx3YtW6tPidnscaZ",
+      "LockReleaseTokenPool": "8eqh8wppT9c5rw4ERqNCffvU6cNFJWff9WmkcYtmGiqC"
+    },
+    "rmnPermeable": false,
+    "router": {
+      "address": "Ccip842gzYHhvdDkSyi2YVCoAWPbYJoApMFzSxQroE9C",
+      "version": "V1"
     }
   },
   "soneium-mainnet": {
@@ -1026,7 +1291,7 @@
   "sonic-mainnet": {
     "armProxy": {
       "address": "0x60536Ef486DB5E0e1771874E31485c12e3c2844f",
-      "version": "1.5.0"
+      "version": "1.0.0"
     },
     "chainSelector": "1673871237479749969",
     "feeTokens": ["LINK", "WS"],
@@ -1034,6 +1299,7 @@
       "address": "0xb0112a2723D9D6CB5194580701A93B1eb67846D2",
       "version": "1.6.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0xB4e1Ff7882474BB93042be9AD5E1fA387949B860",
       "version": "1.2.0"
@@ -1047,23 +1313,23 @@
       "version": "1.5.1"
     }
   },
-  "treasure-mainnet": {
+  "superseed-mainnet": {
     "armProxy": {
-      "address": "0xC47c4d8B5728749050e63939364659C76dE42B48",
+      "address": "0x1A99FF887e5bb3962dA97F409487663B5F539799",
       "version": "1.5.0"
     },
-    "chainSelector": "5214452172935136222",
-    "feeTokens": ["LINK", "WMAGIC"],
+    "chainSelector": "470401360549526817",
+    "feeTokens": ["LINK", "WETH"],
     "registryModule": {
-      "address": "0x3c682c9B41a85d099d636f21B245C8d1058eA787",
+      "address": "0x72Bc4c733f86b14cf1614AEFF99ed3611fCa1B46",
       "version": "1.5.0"
     },
     "router": {
-      "address": "0x58C9A3ab9Ca688eaA69AC0A34EC89AdEC40FD8Ea",
+      "address": "0xAD93FBB3A9a077F896e1F57739e43dEd063f181F",
       "version": "1.2.0"
     },
     "tokenAdminRegistry": {
-      "address": "0x13D291C409f4B86B559efeb4fD367958c74a1411",
+      "address": "0x7a1874cBc865580c6cbE09af25509dF12A6b4F58",
       "version": "1.5.0"
     }
   },
@@ -1113,6 +1379,26 @@
     "tokenPoolFactory": {
       "address": "0x5931822f394baBC2AACF4588E98FC77a9f5aa8C9",
       "version": "1.5.1"
+    }
+  },
+  "zora-mainnet": {
+    "armProxy": {
+      "address": "0xFb6e1F0041c273dE4b99B23E2cB4c12CECe06C56",
+      "version": "1.5.0"
+    },
+    "chainSelector": "3555797439612589184",
+    "feeTokens": ["LINK", "WETH"],
+    "registryModule": {
+      "address": "0x39e2Aeb5a653b4d413B343B3F20bD5AdD0cF8292",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x65b40941fa86Fc444043257cd677a7F0bD034F79",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x791BA3010A5BFeA773d2cfD6Ea4D0Ce9627856eB",
+      "version": "1.5.0"
     }
   }
 }

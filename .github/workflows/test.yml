@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -31,6 +31,7 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v4
         id: cache-node-modules
+        continue-on-error: true
         with:
           path: |
             node_modules
@@ -48,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -60,6 +61,7 @@ jobs:
       # Restore node_modules from setup job
       - name: Restore node_modules
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: |
             node_modules
@@ -67,10 +69,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
+      - name: Ensure Dependencies
+        run: |
+          if [ ! -d "node_modules" ]; then
+            echo "node_modules not found, installing dependencies..."
+            npm ci --prefer-offline --no-audit
+          fi
+
       # Cache Solidity compilation artifacts
       - name: Restore compilation caches
         id: cache-solidity
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: |
             .test/artifacts
@@ -97,7 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -109,12 +119,20 @@ jobs:
       # Restore node_modules from setup job
       - name: Restore node_modules
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: |
             node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
+
+      - name: Ensure Dependencies
+        run: |
+          if [ ! -d "node_modules" ]; then
+            echo "node_modules not found, installing dependencies..."
+            npm ci --prefer-offline --no-audit
+          fi
       
       - name: Check ESLint
         run: |
@@ -132,7 +150,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -144,12 +162,20 @@ jobs:
       # Restore node_modules from setup job
       - name: Restore node_modules
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: |
             node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
+
+      - name: Ensure Dependencies
+        run: |
+          if [ ! -d "node_modules" ]; then
+            echo "node_modules not found, installing dependencies..."
+            npm ci --prefer-offline --no-audit
+          fi
       
       - name: Check Internal Links
         run: npm run linkcheck-internal
@@ -160,7 +186,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -172,6 +198,7 @@ jobs:
       # Restore node_modules from setup job
       - name: Restore node_modules
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: |
             node_modules
@@ -179,10 +206,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
+      - name: Ensure Dependencies
+        run: |
+          if [ ! -d "node_modules" ]; then
+            echo "node_modules not found, installing dependencies..."
+            npm ci --prefer-offline --no-audit
+          fi
+
       - name: Generate Astro types
         run: |
           echo "Generating Astro types..."
-          npx astro sync
+          npm run astro sync
       
       - name: Check Types
         run: |
@@ -200,7 +234,7 @@ jobs:
     
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
@@ -212,12 +246,20 @@ jobs:
       # Restore node_modules from setup job
       - name: Restore node_modules
         uses: actions/cache@v4
+        continue-on-error: true
         with:
           path: |
             node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
+
+      - name: Ensure Dependencies
+        run: |
+          if [ ! -d "node_modules" ]; then
+            echo "node_modules not found, installing dependencies..."
+            npm ci --prefer-offline --no-audit
+          fi
 
       - name: Run Jest Tests
         run: npm test -- --coverage

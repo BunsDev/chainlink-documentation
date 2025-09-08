@@ -92,6 +92,20 @@ export const StreamsNetworksData: NetworkData[] = [
     },
   },
   {
+    network: "Bitlayer",
+    logoUrl: "/assets/chains/bitlayer.svg",
+    mainnet: {
+      label: "Bitlayer Mainnet",
+      verifierProxy: "0x6FDC15cad4f90a037B7126D7EFff105A9d03D6e7",
+      explorerUrl: "https://www.btrscan.com/address/%s",
+    },
+    testnet: {
+      label: "Bitlayer Testnet",
+      verifierProxy: "0x57A97148C1fa50f35F0639f380077017D8893b6b",
+      explorerUrl: "https://testnet.btrscan.com/address/%s",
+    },
+  },
+  {
     network: "Blast",
     logoUrl: "/assets/chains/blast.svg",
     networkStatus: "https://status.blast.io/",
@@ -138,10 +152,29 @@ export const StreamsNetworksData: NetworkData[] = [
   {
     network: "Botanix",
     logoUrl: "/assets/chains/botanix.svg",
+    mainnet: {
+      label: "Botanix Mainnet",
+      verifierProxy: "0xC539169910DE08D237Df0d73BcDa9074c787A4a1",
+      explorerUrl: "https://botanixscan.io/address/%s",
+    },
     testnet: {
       label: "Botanix Testnet",
       verifierProxy: "0xfBFff08fE4169853F7B1b5Ac67eC10dc8806801d",
       explorerUrl: "https://testnet.botanixscan.io/address/%s",
+    },
+  },
+  {
+    network: "Celo",
+    logoUrl: "/assets/chains/celo.svg",
+    mainnet: {
+      label: "Celo Mainnet",
+      verifierProxy: "0x57A97148C1fa50f35F0639f380077017D8893b6b",
+      explorerUrl: "https://celoscan.io/address/%s",
+    },
+    testnet: {
+      label: "Celo Testnet Alfajores",
+      verifierProxy: "0xfa58eE98c9d56A3e6e903f300BE8C60Bf031808D",
+      explorerUrl: "https://alfajores.celoscan.io/address/%s",
     },
   },
   {
@@ -173,6 +206,20 @@ export const StreamsNetworksData: NetworkData[] = [
     },
   },
   {
+    network: "Gravity",
+    logoUrl: "/assets/chains/gravity.svg",
+    mainnet: {
+      label: "Gravity Alpha Mainnet",
+      verifierProxy: "0x60fAa7faC949aF392DFc858F5d97E3EEfa07E9EB",
+      explorerUrl: "https://explorer.gravity.xyz/address/%s",
+    },
+    testnet: {
+      label: "Gravity Alpha Testnet Sepolia",
+      verifierProxy: "0x60fAa7faC949aF392DFc858F5d97E3EEfa07E9EB",
+      explorerUrl: "https://explorer-sepolia.gravity.xyz/address/%s",
+    },
+  },
+  {
     network: "HashKey Chain",
     logoUrl: "/assets/chains/hashkey.svg",
     mainnet: {
@@ -187,15 +234,15 @@ export const StreamsNetworksData: NetworkData[] = [
     },
   },
   {
-    network: "Hyperliquid",
+    network: "HyperEVM",
     logoUrl: "/assets/chains/hyperliquid.svg",
     mainnet: {
-      label: "Hyperliquid Mainnet",
+      label: "HyperEVM Mainnet",
       verifierProxy: "0x60fAa7faC949aF392DFc858F5d97E3EEfa07E9EB",
       explorerUrl: "https://hyperliquid.cloud.blockscout.com/address/%s",
     },
     testnet: {
-      label: "Hyperliquid Testnet",
+      label: "HyperEVM Testnet",
       verifierProxy: "0x60fAa7faC949aF392DFc858F5d97E3EEfa07E9EB",
       explorerUrl: "https://evm.hyperstats.xyz/address/%s",
     },
@@ -213,6 +260,20 @@ export const StreamsNetworksData: NetworkData[] = [
       label: "Ink Sepolia Testnet",
       verifierProxy: "0x1f27392cC2394d54fFBA83B89C881200b5d5632C",
       explorerUrl: "https://explorer-sepolia.inkonchain.com/address/%s",
+    },
+  },
+  {
+    network: "Katana",
+    logoUrl: "/assets/chains/polygonkatana.svg",
+    mainnet: {
+      label: "Katana Mainnet",
+      verifierProxy: "0x2a644E5AC685112A7Eff0c4d73CD0260546D366F",
+      explorerUrl: "https://explorer.katanarpc.com/address/%s",
+    },
+    testnet: {
+      label: "Katana Testnet (Tatara)",
+      verifierProxy: "0x57A97148C1fa50f35F0639f380077017D8893b6b",
+      explorerUrl: "https://explorer.tatara.katana.network/address/%s",
     },
   },
   {
@@ -270,6 +331,20 @@ export const StreamsNetworksData: NetworkData[] = [
     },
   },
   {
+    network: "Metis",
+    logoUrl: "/assets/chains/metis.svg",
+    mainnet: {
+      label: "Metis Andromeda Mainnet",
+      verifierProxy: "0xC539169910DE08D237Df0d73BcDa9074c787A4a1",
+      explorerUrl: "https://andromeda-explorer.metis.io/address/%s",
+    },
+    testnet: {
+      label: "Metis Sepolia Testnet",
+      verifierProxy: "0xcFC9A8Efad365B04253575326f6A9bcDD8131Eb7",
+      explorerUrl: "https://sepolia-explorer.metisdevops.link/address/%s",
+    },
+  },
+  {
     network: "Monad",
     logoUrl: "/assets/chains/monad.svg",
     testnet: {
@@ -281,7 +356,6 @@ export const StreamsNetworksData: NetworkData[] = [
   {
     network: "opBNB",
     logoUrl: "/assets/chains/opbnb.svg",
-    networkStatus: "https://opbnb-status.bnbchain.org/",
     mainnet: {
       label: "opBNB Mainnet",
       verifierProxy: "0x7D543D1a715ED544f7e3Ae9e3b1777BCdA56bF8e",
@@ -309,6 +383,21 @@ export const StreamsNetworksData: NetworkData[] = [
     },
   },
   {
+    network: "Polygon",
+    logoUrl: "/assets/chains/polygon.svg",
+    networkStatus: "https://polygonscan.freshstatus.io/",
+    mainnet: {
+      label: "Polygon Mainnet",
+      verifierProxy: "0xF276a4BC8Da323EA3E8c3c195a4E2E7615a898d1",
+      explorerUrl: "https://polygonscan.com/address/%s",
+    },
+    testnet: {
+      label: "Polygon Amoy Testnet",
+      verifierProxy: "0x60fAa7faC949aF392DFc858F5d97E3EEfa07E9EB",
+      explorerUrl: "https://amoy.polygonscan.com/address/%s",
+    },
+  },
+  {
     network: "Ronin",
     logoUrl: "/assets/chains/ronin.svg",
     mainnet: {
@@ -324,6 +413,7 @@ export const StreamsNetworksData: NetworkData[] = [
   },
   {
     network: "Scroll",
+    networkStatus: "https://status.scroll.io/",
     logoUrl: "/assets/chains/scroll.svg",
     mainnet: {
       label: "Scroll Mainnet",
@@ -413,6 +503,7 @@ export const StreamsNetworksData: NetworkData[] = [
   {
     network: "Unichain",
     logoUrl: "/assets/chains/unichain.svg",
+    networkStatus: "https://status.unichain.org/",
     mainnet: {
       label: "Unichain Mainnet",
       verifierProxy: "0x60fAa7faC949aF392DFc858F5d97E3EEfa07E9EB",
@@ -427,6 +518,7 @@ export const StreamsNetworksData: NetworkData[] = [
   {
     network: "World Chain",
     logoUrl: "/assets/chains/worldchain.svg",
+    networkStatus: "https://worldchain-mainnet-status.alchemy.com/",
     mainnet: {
       label: "World Chain Mainnet",
       verifierProxy: "0x6733e9106094b0C794e8E0297c96611fF60460Bf",

@@ -18,7 +18,7 @@ updates:
         versions: ["*"]
       - dependency-name: "@chainlink/local"
         versions: ["*"]
-      - dependency-name: "chainlink-algolia-search"
+      - dependency-name: "@chainlink/cl-search-frontend"
         versions: ["*"]
       # For all deps
       - dependency-name: "*"

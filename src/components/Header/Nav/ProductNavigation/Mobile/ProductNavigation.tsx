@@ -62,8 +62,8 @@ export function ProductNavigation() {
                       src="/chainlink-docs.svg"
                       height={32}
                     />
-                    <Close ref={closeButtonRef} className={styles.closeButton}>
-                      <img src="/assets/icons/close.svg" />
+                    <Close ref={closeButtonRef} className={styles.closeButton} aria-label="Close navigation">
+                      <img src="/assets/icons/close.svg" alt="" />
                     </Close>
                   </div>
                   <ul className={clsx(styles.productContent)}>
@@ -71,6 +71,7 @@ export function ProductNavigation() {
                       className={styles.productContentLink}
                       onClick={() => setProductsSlidePosition("submenu")}
                       data-testid="sub-product-navigation-trigger-mobile"
+                      aria-label="Open Resources submenu"
                     >
                       Resources
                       <CaretRightIcon />
@@ -84,7 +85,7 @@ export function ProductNavigation() {
                     <a href="https://dev.chain.link/tools" className={styles.productContentLink}>
                       Tools
                     </a>
-                    <a href="https://dev.chain.link/chainlog" className={styles.productContentLink}>
+                    <a href="https://dev.chain.link/changelog" className={styles.productContentLink}>
                       Changelog
                     </a>
                     <a href="https://dev.chain.link/certification" className={styles.productContentLink}>
@@ -94,7 +95,12 @@ export function ProductNavigation() {
                 </div>
                 <div className={clsx(styles.subProductContentPage)}>
                   <div className={styles.header}>
-                    <button key="back" className={styles.back} onClick={() => setProductsSlidePosition("main")}>
+                    <button
+                      key="back"
+                      className={styles.back}
+                      onClick={() => setProductsSlidePosition("main")}
+                      aria-label="Go back to main menu"
+                    >
                       <BackArrowIcon />
                     </button>
                     <span className={styles.subProductContentTitle}>Resources</span>

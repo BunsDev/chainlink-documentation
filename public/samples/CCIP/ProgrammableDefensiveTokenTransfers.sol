@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
-import {IRouterClient} from "@chainlink/contracts-ccip/src/v0.8/ccip/interfaces/IRouterClient.sol";
-import {OwnerIsCreator} from "@chainlink/contracts-ccip/src/v0.8/shared/access/OwnerIsCreator.sol";
-import {Client} from "@chainlink/contracts-ccip/src/v0.8/ccip/libraries/Client.sol";
-import {CCIPReceiver} from "@chainlink/contracts-ccip/src/v0.8/ccip/applications/CCIPReceiver.sol";
-import {IERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol";
-import {EnumerableMap} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/utils/structs/EnumerableMap.sol";
+import {IRouterClient} from "@chainlink/contracts-ccip/contracts/interfaces/IRouterClient.sol";
+import {OwnerIsCreator} from "@chainlink/contracts/src/v0.8/shared/access/OwnerIsCreator.sol";
+import {Client} from "@chainlink/contracts-ccip/contracts/libraries/Client.sol";
+import {CCIPReceiver} from "@chainlink/contracts-ccip/contracts/applications/CCIPReceiver.sol";
+import {IERC20} from "@chainlink/contracts/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/IERC20.sol";
+import {SafeERC20} from "@chainlink/contracts/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol";
+import {EnumerableMap} from "@chainlink/contracts/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/utils/structs/EnumerableMap.sol";
 
 /**
  * THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED VALUES FOR CLARITY.
@@ -22,7 +22,7 @@ contract ProgrammableDefensiveTokenTransfers is CCIPReceiver, OwnerIsCreator {
     using SafeERC20 for IERC20;
 
     // Custom errors to provide more descriptive revert messages.
-    error NotEnoughBalance(uint256 currentBalance, uint256 calculatedFees); // Used to make sure contract has enough balance to cover the fees.
+    error NotEnoughBalance(uint256 currentBalance, uint256 requiredBalance); // Used to make sure contract has enough token balance
     error NothingToWithdraw(); // Used when trying to withdraw Ether but there's nothing to withdraw.
     error FailedToWithdrawEth(address owner, address target, uint256 value); // Used when the withdrawal of Ether fails.
     error DestinationChainNotAllowlisted(uint64 destinationChainSelector); // Used when the destination chain has not been allowlisted by the contract owner.
@@ -204,14 +204,32 @@ contract ProgrammableDefensiveTokenTransfers is CCIPReceiver, OwnerIsCreator {
         // Get the fee required to send the CCIP message
         uint256 fees = router.getFee(_destinationChainSelector, evm2AnyMessage);
 
-        if (fees > s_linkToken.balanceOf(address(this)))
-            revert NotEnoughBalance(s_linkToken.balanceOf(address(this)), fees);
+        uint256 requiredLinkBalance;
+        if (_token == address(s_linkToken)) {
+            // Required LINK Balance is the sum of fees and amount to transfer, if the token to transfer is LINK
+            requiredLinkBalance = fees + _amount;
+        } else {
+            requiredLinkBalance = fees;
+        }
 
-        // approve the Router to transfer LINK tokens on contract's behalf. It will spend the fees in LINK
-        s_linkToken.approve(address(router), fees);
+        uint256 linkBalance = s_linkToken.balanceOf(address(this));
 
-        // approve the Router to spend tokens on contract's behalf. It will spend the amount of the given token
-        IERC20(_token).approve(address(router), _amount);
+        if (requiredLinkBalance > linkBalance) {
+            revert NotEnoughBalance(linkBalance, requiredLinkBalance);
+        }
+
+        // approve the Router to transfer LINK tokens on contract's behalf. It will spend the requiredLinkBalance
+        s_linkToken.approve(address(router), requiredLinkBalance);
+
+        // If sending a token other than LINK, approve it separately
+        if (_token != address(s_linkToken)) {
+            uint256 tokenBalance = IERC20(_token).balanceOf(address(this));
+            if (_amount > tokenBalance) {
+                revert NotEnoughBalance(tokenBalance, _amount);
+            }
+            // approve the Router to spend tokens on contract's behalf. It will spend the amount of the given token
+            IERC20(_token).approve(address(router), _amount);
+        }
 
         // Send the message through the router and store the returned message ID
         messageId = router.ccipSend(_destinationChainSelector, evm2AnyMessage);
@@ -496,8 +514,8 @@ contract ProgrammableDefensiveTokenTransfers is CCIPReceiver, OwnerIsCreator {
                 // Additional arguments, setting gas limit and allowing out-of-order execution.
                 // Best Practice: For simplicity, the values are hardcoded. It is advisable to use a more dynamic approach
                 // where you set the extra arguments off-chain. This allows adaptation depending on the lanes, messages,
-                // and ensures compatibility with future CCIP upgrades. Read more about it here: https://docs.chain.link/ccip/best-practices#using-extraargs
-                Client.EVMExtraArgsV2({
+                // and ensures compatibility with future CCIP upgrades. Read more about it here: https://docs.chain.link/ccip/concepts/best-practices/evm#using-extraargs
+                Client.GenericExtraArgsV2({
                     gasLimit: 400_000, // Gas limit for the callback on the destination chain
                     allowOutOfOrderExecution: true // Allows the message to be executed out of order relative to other messages from the same sender
                 })

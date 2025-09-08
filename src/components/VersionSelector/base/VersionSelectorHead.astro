@@ -1,12 +1,7 @@
 ---
 import type { Collection } from "~/content.config.ts"
-import {
-  validateVersion,
-  sortVersions,
-  buildVersionUrl,
-  getProductVersionConfig,
-  getVersionReleaseDate,
-} from "../utils/versions.ts"
+import { buildVersionUrl, getVersionReleaseDate } from "../utils/versions.ts"
+import { extractVersionInfo } from "../utils/extractVersionInfo.ts"
 import { PAGE_AVAILABILITY } from "@config/versions/page-availability"
 
 interface Props {
@@ -16,25 +11,30 @@ interface Props {
 
 const { product, currentPath } = Astro.props
 
-// Get version config for the product
-const versionConfig = getProductVersionConfig(product)
-if (!versionConfig) {
+// Extract version information using shared utility
+const extractedVersionInfo = extractVersionInfo(product, currentPath)
+if (!extractedVersionInfo) {
   throw new Error(`No version configuration found for product: ${product}`)
 }
 
-// Extract version from path
-const versionMatch = currentPath.match(new RegExp(`/${product}/api-reference/(v[^/]+)`))
-const pathVersion = versionMatch ? versionMatch[1] : versionConfig.LATEST
-
-// Server-side computations
-const validatedVersion = validateVersion(pathVersion, versionConfig.ALL)
-const sortedVersions = sortVersions(versionConfig.ALL)
-const isNotLatest = validatedVersion !== versionConfig.LATEST
-const isDeprecated = versionConfig.DEPRECATED?.includes(validatedVersion) ?? false
+const {
+  validatedVersion,
+  isNotLatest,
+  isDeprecated,
+  releaseDate,
+  vmType,
+  versionConfig,
+  sortedVersions,
+  basePath,
+  productConfig,
+  canonicalUrl,
+} = extractedVersionInfo
 
 // Extract page path to check availability
-const pageMatch = currentPath.match(new RegExp(`/${product}/api-reference/v[^/]+/(.+?)/?$`))
-const pagePath = pageMatch ? pageMatch[1] : null
+// Support both path patterns
+const standardPageMatch = currentPath.match(new RegExp(`/${product}/api-reference/v[^/]+/(.+?)/?$`))
+const extendedPageMatch = currentPath.match(new RegExp(`/${product}/api-reference/(?:evm|svm)/v[^/]+/(.+?)/?$`))
+const pagePath = extendedPageMatch?.[1] || standardPageMatch?.[1] || null
 const productAvailability = PAGE_AVAILABILITY[product]
 
 // Function to check if a version is available for this page
@@ -56,56 +56,24 @@ const isVersionAvailable = (version: string): boolean => {
   return isAvailable
 }
 
-// Get release date for the current version
-const releaseDate = getVersionReleaseDate(product, validatedVersion)
-
-// Create product config for URLs
-const productConfig = {
-  name: product,
-  basePath: `/${product}/api-reference`,
-}
-
 // Generate changelog URL (points to API reference index)
-const changelogUrl = `/${product}/api-reference`
+const changelogUrl = basePath
 
 // Filter versions based on availability
 const availableVersions = sortedVersions.filter((version) => isVersionAvailable(version))
 
-// SEO: Generate structured data
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "TechArticle",
-  version: validatedVersion,
-  datePublished: releaseDate,
-  dateModified: releaseDate,
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": currentPath,
-  },
-  isPartOf: {
-    "@type": "APIReference",
-    name: product,
-    versionList: availableVersions.map((version) => ({
-      "@type": "SoftwareVersion",
-      version: version,
-      url: buildVersionUrl(productConfig, currentPath, validatedVersion, version),
-      releaseDate: getVersionReleaseDate(product, version),
-      status: version === versionConfig.LATEST ? "Latest" : isDeprecated ? "Deprecated" : "Stable",
-    })),
-  },
-}
+// SEO: Structured data generation REMOVED - now handled by unified structuredData.ts
 
 // SEO: Version alternates with metadata (only for available versions)
 const versions = availableVersions.map((version) => ({
-  url: buildVersionUrl(productConfig, currentPath, validatedVersion, version),
+  url: buildVersionUrl(productConfig, currentPath, validatedVersion, version).replace(/\/+$/, ""),
   version,
   isLatest: version === versionConfig.LATEST,
   isDeprecated: versionConfig.DEPRECATED?.includes(version) ?? false,
 }))
 ---
 
-{/* SEO: Structured data */}
-<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+{/* SEO: Structured data - REMOVED: Now handled by unified structuredData.ts */}
 
 {/* SEO: Version metadata */}
 <meta name="version" content={validatedVersion} />
@@ -118,7 +86,6 @@ const versions = availableVersions.map((version) => ({
     <link
       rel={isLatest ? "canonical" : "alternate"}
       href={url}
-      hreflang="x-default"
       title={`Version ${version}${isLatest ? " (Latest)" : ""}${isDeprecated ? " (Deprecated)" : ""}`}
       data-version={version}
     />

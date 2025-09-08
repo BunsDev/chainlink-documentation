@@ -43,6 +43,10 @@ const NETWORK_ENDPOINTS: Record<string, string> = {
   xlayer: "https://reference-data-directory.vercel.app/feeds-ethereum-mainnet-xlayer-1.json",
   ronin: "https://reference-data-directory.vercel.app/feeds-ronin-mainnet.json",
   tron: "https://docs.chain.link/files/json/feeds-tron-mainnet.json",
+  botanix: "https://reference-data-directory.vercel.app/feeds-bitcoin-mainnet-botanix.json",
+  monad: "https://reference-data-directory.vercel.app/feeds-monad-testnet.json",
+  polygonkatana: "https://reference-data-directory.vercel.app/feeds-polygon-mainnet-katana.json",
+  bob: "https://reference-data-directory.vercel.app/feeds-bitcoin-mainnet-bob-1.json",
 }
 
 // Path to the baseline JSON file that contains known feed IDs
@@ -82,15 +86,64 @@ function buildIconUrl(baseAsset: string): string {
  * @returns URL to the feed's data page
  */
 function buildFeedUrl(item: DataItem): string {
+  // Special case for TRON network - redirect to docs.chain.link
+  if (item.network === "tron") {
+    const searchParam = (item.baseAsset || "").toLowerCase()
+    return `https://docs.chain.link/data-feeds/price-feeds/addresses?page=1&network=tron&search=${searchParam}`
+  }
+
+  // For data streams
   if (item.deliveryChannelCode === "DS") {
     const base = (item.baseAsset || "BASE").toLowerCase()
     const quote = (item.quoteAsset || "QUOTE").toLowerCase()
     return `https://data.chain.link/streams/${base}-${quote}`
   }
-  // otherwise, it's "https://data.chain.link/feeds/<network>/mainnet/<suffix>"
-  const feedSuffix = item.feedID.split("-").slice(1).join("-")
+
+  // Network name mapping for URL paths
+  const NETWORK_NAME_MAPPING: Record<string, string> = {
+    "bnb-chain": "bsc",
+    "gnosis-chain": "xdai",
+    polygonzkevm: "polygon-zkevm",
+    polygonkatana: "katana",
+    // Add more mappings as needed
+  }
+
+  // Networks that use their own name instead of "mainnet" in URLs
+  const NETWORK_PATH_EXCEPTIONS: Record<string, string> = {
+    sonic: "sonic",
+    base: "base",
+    hedera: "hedera",
+    mantle: "mantle",
+    polygonzkevm: "polygon-zkevm",
+    polygonkatana: "polygon-mainnet-katana",
+    ronin: "ronin",
+    soneium: "soneium",
+    xlayer: "xlayer",
+    zksync: "zksync",
+    // Add more exceptions as they're discovered
+  }
+
+  // Map the network name if needed
+  const networkUrlPath = NETWORK_NAME_MAPPING[item.network] || item.network
+
+  // Process the feed suffix - handle special cases
+  let feedSuffix = ""
+  const feedParts = item.feedID.split("-")
+
+  // For BNB Chain feeds, if the first part after network is "chain", remove it
+  if (item.network === "bnb-chain" && feedParts.length > 1 && feedParts[1] === "chain") {
+    feedSuffix = feedParts.slice(2).join("-")
+  } else {
+    feedSuffix = feedParts.slice(1).join("-")
+  }
+
+  // Remove any spaces for URL safety
   const safeSuffix = feedSuffix.replace(/\s/g, "%20")
-  return `https://data.chain.link/feeds/${item.network}/mainnet/${safeSuffix}`
+
+  // Use the network-specific path or fall back to 'mainnet'
+  const networkPath = NETWORK_PATH_EXCEPTIONS[item.network] || "mainnet"
+
+  return `https://data.chain.link/feeds/${networkUrlPath}/${networkPath}/${safeSuffix}`
 }
 
 /**
@@ -113,7 +166,7 @@ async function detectNewData(): Promise<void> {
       const rawJson = await fetchNetworkJson(url)
       // rawJson is presumably an array of feed definitions
       // Convert them into our DataItem structure
-      for (const obj of rawJson) {
+      for (const obj of Object.values(rawJson)) {
         const item = convertToDataItem(obj, networkSlug)
         if (item && !item.hidden) {
           allItems.push(item)
@@ -226,59 +279,59 @@ async function fetchNetworkJson(url: string): Promise<any[]> {
  * @returns Standardized DataItem or null if validation fails
  */
 function convertToDataItem(obj: any, network: string): DataItem | null {
+  // Get product type code to check for special cases
+  const productTypeCode = obj.docs?.productTypeCode || ""
+  const isRefMacro = productTypeCode.toUpperCase().trim() === "REFMACRO"
+
   // 1) Must have a `path`
-  if (!obj?.path) {
+  const path = obj.path
+  if (!path) {
     return null
   }
 
-  // 2) Must have a top-level assetName
-  const topLevelAssetName = obj.assetName
+  // 2) Must have a top-level assetName (source field differs for RefMacro)
+  const topLevelAssetName = isRefMacro ? obj.name : obj.assetName
 
-  // 3) Must have baseAsset in docs for all products
+  // 3) Must have baseAsset in docs for all products (except RefMacro)
   const baseAsset = obj.docs?.baseAsset
 
   // 4) Check hidden
   const hidden = obj.docs?.hidden === true
-
-  // 5) We'll get productTypeCode and deliveryChannel
-  const productTypeCode = obj.docs?.productTypeCode || ""
-  const deliveryChannel = obj.docs?.deliveryChannelCode || ""
-
-  // 6) If missing assetName or baseAsset, skip
-  if (!topLevelAssetName || !baseAsset) {
-    return null
-  }
-
   if (hidden) {
     return null
   }
 
+  // 5) We'll get deliveryChannel
+  const deliveryChannel = obj.docs?.deliveryChannelCode || ""
+
+  // 6) If missing assetName, skip. For non-RefMacro, also require baseAsset.
+  if (!topLevelAssetName || (!isRefMacro && !baseAsset)) {
+    return null
+  }
+
   // 7) Now handle quoteAsset logic:
-  //    For streams or normal feeds, we require quoteAsset
-  //    For SmartData feeds (PoR, NAV, AUM), we do NOT require it
   const codeUpper = productTypeCode.toUpperCase().trim()
   const quoteAsset = obj.docs?.quoteAsset || ""
 
-  // If it's not one of the SmartData codes, we require a quoteAsset
-  // (i.e. data-feeds or data-streams)
-  if (!["POR", "NAV", "AUM"].includes(codeUpper)) {
-    // If quoteAsset is missing, skip
+  if (!["POR", "NAV", "AUM", "REFMACRO"].includes(codeUpper)) {
     if (!quoteAsset) {
       return null
     }
   }
 
   // 8) Build and return the item
-  return {
-    feedID: `${network}-${obj.path}`, // combine for uniqueness across networks
+  const result = {
+    feedID: `${network}-${path}`,
     hidden: false,
     productTypeCode,
     deliveryChannelCode: deliveryChannel,
     network,
     assetName: topLevelAssetName,
-    baseAsset,
+    baseAsset: baseAsset || (isRefMacro ? topLevelAssetName : undefined),
     quoteAsset,
   }
+
+  return result
 }
 
 /**

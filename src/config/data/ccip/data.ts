@@ -10,16 +10,21 @@ import {
   NetworkFees,
   LaneConfig,
   Network,
+  DecomConfig,
+  DecommissionedNetwork,
 } from "./types.ts"
 import { determineTokenMechanism } from "./utils.ts"
-import { ExplorerInfo, SupportedChain } from "@config/types.ts"
+import { ExplorerInfo, SupportedChain, ChainType } from "@config/types.ts"
 import {
   directoryToSupportedChain,
   getChainIcon,
   getExplorer,
   getExplorerAddressUrl,
   getTitle,
+  getChainTypeAndFamily,
   supportedChainToChainInRdd,
+  getTokenIconUrl,
+  getNativeCurrency,
 } from "@features/utils/index.ts"
 
 // For mainnet
@@ -32,11 +37,17 @@ import chainsTestnetv120 from "@config/data/ccip/v1_2_0/testnet/chains.json" wit
 import lanesTestnetv120 from "@config/data/ccip/v1_2_0/testnet/lanes.json" with { type: "json" }
 import tokensTestnetv120 from "@config/data/ccip/v1_2_0/testnet/tokens.json" with { type: "json" }
 
+// For decommissioned chains
+import decomMainnetv120 from "@config/data/ccip/v1_2_0/mainnet/decom.json" with { type: "json" }
+import decomTestnetv120 from "@config/data/ccip/v1_2_0/testnet/decom.json" with { type: "json" }
+
 // Import errors by version
 // eslint-disable-next-line camelcase
 import * as errors_v1_5_0 from "./errors/v1_5_0/index.ts"
 // eslint-disable-next-line camelcase
 import * as errors_v1_5_1 from "./errors/v1_5_1/index.ts"
+// eslint-disable-next-line camelcase
+import * as errors_v1_6_0 from "./errors/v1_6_0/index.ts"
 
 export const getAllEnvironments = () => [Environment.Mainnet, Environment.Testnet]
 export const getAllVersions = () => [Version.V1_2_0]
@@ -56,9 +67,14 @@ type ErrorTypesV151 = ErrorTypesV150 & {
   burnMintERC20CCIPSendErrors: CCIPSendErrorEntry[]
 }
 
+type ErrorTypesV160 = ErrorTypesV151 & {
+  feequoterCCIPSendErrors: CCIPSendErrorEntry[]
+}
+
 type VersionedErrors = {
   v1_5_0: ErrorTypesV150
   v1_5_1: ErrorTypesV151
+  v1_6_0: ErrorTypesV160
 }
 
 // Export errors by version with type safety
@@ -67,6 +83,8 @@ export const errors: VersionedErrors = {
   v1_5_0: errors_v1_5_0 as ErrorTypesV150,
   // eslint-disable-next-line camelcase
   v1_5_1: errors_v1_5_1 as ErrorTypesV151,
+  // eslint-disable-next-line camelcase
+  v1_6_0: errors_v1_6_0 as ErrorTypesV160,
 }
 
 export const networkFees: NetworkFees = {
@@ -383,71 +401,54 @@ export const getAllNetworks = ({ filter }: { filter: Environment }): Network[] =
     environment: filter,
   })
 
-  const allChains: {
-    name: string
-    logo: string
-    totalLanes: number
-    totalTokens: number
-    chain: string
-    key: string
-    chainSelector: string
-    tokenAdminRegistry?: string
-    explorer: ExplorerInfo
-    registryModule?: string
-    router?: {
-      address: string
-      version: string
-    }
-    feeTokens?: {
-      name: string
-      logo: string
-    }[]
-    nativeToken?: {
-      name: string
-      symbol: string
-      logo: string
-    }
-    armProxy: {
-      address: string
-      version: string
-    }
-    routerExplorerUrl: string
-  }[] = []
+  const allChains: Network[] = []
 
   for (const chain of chains) {
-    const directory = directoryToSupportedChain(chain)
-    const title = getTitle(directory)
-    if (!title) throw Error(`Title not found for ${directory}`)
+    const supportedChain = directoryToSupportedChain(chain)
+    const title = getTitle(supportedChain)
+    if (!title) throw Error(`Title not found for ${supportedChain}`)
 
     const lanes = Environment.Mainnet === filter ? lanesMainnetv120 : lanesTestnetv120
     const chains = Environment.Mainnet === filter ? chainsMainnetv120 : chainsTestnetv120
-    const logo = getChainIcon(directory)
-    if (!logo) throw Error(`Logo not found for ${directory}`)
+    const logo = getChainIcon(supportedChain)
+    if (!logo) throw Error(`Logo not found for ${supportedChain}`)
     const token = getTokensOfChain({ chain, filter })
-    const explorer = getExplorer(directory)
+    const explorer = getExplorer(supportedChain)
     const router = chains[chain].router
-    if (!explorer) throw Error(`Explorer not found for ${directory}`)
+    if (!explorer) throw Error(`Explorer not found for ${supportedChain}`)
     const routerExplorerUrl = getExplorerAddressUrl(explorer)(router.address)
+    const nativeToken = getNativeCurrency(supportedChain)
+    if (!nativeToken) throw Error(`Native token not found for ${supportedChain}`)
+
+    // Determine chain type based on chain name
+    const { chainType } = getChainTypeAndFamily(supportedChain)
+
     allChains.push({
       name: title,
       logo,
-      totalLanes: Object.keys(lanes[chain]).length,
+      totalLanes: lanes[chain] ? Object.keys(lanes[chain]).length : 0,
       totalTokens: token.length,
       chain,
       key: chain,
       explorer,
+      chainType,
       tokenAdminRegistry: chains[chain]?.tokenAdminRegistry?.address,
       registryModule: chains[chain]?.registryModule?.address,
       router,
       routerExplorerUrl,
       chainSelector: chains[chain].chainSelector,
       nativeToken: {
-        name: chains[chain]?.nativeToken?.name || "",
-        symbol: chains[chain]?.nativeToken?.symbol || "",
-        logo: chains[chain]?.nativeToken?.logo || "",
+        name: nativeToken.name,
+        symbol: nativeToken.symbol,
+        logo: getTokenIconUrl(nativeToken.symbol),
       },
-      feeTokens: chains[chain].feeTokens,
+      feeTokens: chains[chain].feeTokens?.map((tokenName: string) => ({
+        name: tokenName,
+        logo: getTokenIconUrl(tokenName),
+      })),
       armProxy: chains[chain].armProxy,
+      feeQuoter: chainType === "solana" ? chains[chain]?.feeQuoter : undefined,
+      rmnPermeable: chains[chain]?.rmnPermeable,
     })
   }
 
@@ -468,14 +469,17 @@ export const getNetwork = ({ chain, filter }: { chain: string; filter: Environme
           chainsReferenceData = chainsTestnetv120 as unknown as ChainsConfig
           break
         default:
-          throw new Error(`Invalid testnet version: ${filter}`)
+          throw new Error(`Invalid environment: ${filter}`)
       }
 
       const chainDetails = chainsReferenceData[chain]
+
       return {
         name: network.name,
         logo: network.logo,
         explorer: network.explorer,
+        chainType: network.chainType,
+        rmnPermeable: chainDetails?.rmnPermeable,
         ...chainDetails,
       }
     }
@@ -622,40 +626,45 @@ export function getSearchLanes({ environment }: { environment: Environment }) {
       name: string
       logo: string
       key: string
+      chainType: ChainType
     }
     destinationNetwork: {
       name: string
       logo: string
       key: string
       explorer: ExplorerInfo
+      chainType: ChainType
     }
     lane: LaneConfig
   }[] = []
 
   for (const sourceChain in lanes) {
-    const sourceChainDirectory = directoryToSupportedChain(sourceChain)
-    const sourceChainTitle = getTitle(sourceChainDirectory)
-    const sourceChainLogo = getChainIcon(sourceChainDirectory)
+    const sourceSupportedChain = directoryToSupportedChain(sourceChain)
+    const sourceChainTitle = getTitle(sourceSupportedChain)
+    const sourceChainLogo = getChainIcon(sourceSupportedChain)
+    const { chainType: sourceChainType } = getChainTypeAndFamily(sourceSupportedChain)
 
     for (const destinationChain in lanes[sourceChain]) {
-      const destinationChainDirectory = directoryToSupportedChain(destinationChain)
-      const destinationChainTitle = getTitle(destinationChainDirectory)
-      const destinationChainLogo = getChainIcon(destinationChainDirectory)
-
+      const destinationSupportedChain = directoryToSupportedChain(destinationChain)
+      const destinationChainTitle = getTitle(destinationSupportedChain)
+      const destinationChainLogo = getChainIcon(destinationSupportedChain)
+      const { chainType: destinationChainType } = getChainTypeAndFamily(destinationSupportedChain)
       const lane = lanes[sourceChain][destinationChain]
-      const explorer = getExplorer(destinationChainDirectory)
-      if (!explorer) throw Error(`Explorer not found for ${destinationChainDirectory}`)
+      const destinationExplorer = getExplorer(destinationSupportedChain)
+      if (!destinationExplorer) throw Error(`Explorer not found for ${destinationSupportedChain}`)
       allLanes.push({
         sourceNetwork: {
           name: sourceChainTitle || "",
           logo: sourceChainLogo || "",
           key: sourceChain,
+          chainType: sourceChainType,
         },
         destinationNetwork: {
           name: destinationChainTitle || "",
           logo: destinationChainLogo || "",
           key: destinationChain,
-          explorer,
+          explorer: destinationExplorer,
+          chainType: destinationChainType,
         },
         lane,
       })
@@ -672,11 +681,55 @@ export function getSearchLanes({ environment }: { environment: Environment }) {
   })
 }
 
-export async function getOperationalState(chain: string) {
-  const url = `/api/ccip/lane-statuses?sourceNetworkId=${chain}`
-  const response = await fetch(url)
-  if (response.status !== 200) {
-    return {}
+export const loadDecommissionedData = ({ environment, version }: { environment: Environment; version: Version }) => {
+  let decomReferenceData: DecomConfig
+
+  if (environment === Environment.Mainnet && version === Version.V1_2_0) {
+    decomReferenceData = decomMainnetv120 as unknown as DecomConfig
+  } else if (environment === Environment.Testnet && version === Version.V1_2_0) {
+    decomReferenceData = decomTestnetv120 as unknown as DecomConfig
+  } else {
+    throw new Error(`Invalid environment/version combination for decommissioned chains: ${environment}/${version}`)
   }
-  return response.json()
+
+  return { decomReferenceData }
+}
+
+export const getAllDecommissionedNetworks = ({ filter }: { filter: Environment }): DecommissionedNetwork[] => {
+  const { decomReferenceData } = loadDecommissionedData({
+    environment: filter,
+    version: Version.V1_2_0,
+  })
+
+  const decommissionedChains: DecommissionedNetwork[] = []
+
+  for (const chain in decomReferenceData) {
+    const supportedChain = directoryToSupportedChain(chain)
+    const title = getTitle(supportedChain)
+    if (!title) throw Error(`Title not found for decommissioned chain ${supportedChain}`)
+
+    const logo = getChainIcon(supportedChain)
+    if (!logo) throw Error(`Logo not found for decommissioned chain ${supportedChain}`)
+
+    const explorer = getExplorer(supportedChain)
+    if (!explorer) throw Error(`Explorer not found for decommissioned chain ${supportedChain}`)
+
+    const { chainType } = getChainTypeAndFamily(supportedChain)
+
+    decommissionedChains.push({
+      name: title,
+      chain,
+      chainSelector: decomReferenceData[chain].chainSelector,
+      logo,
+      explorer,
+      chainType,
+    })
+  }
+
+  return decommissionedChains.sort((a, b) => a.name.localeCompare(b.name))
+}
+
+export const getDecommissionedNetwork = ({ chain, filter }: { chain: string; filter: Environment }) => {
+  const decommissionedChains = getAllDecommissionedNetworks({ filter })
+  return decommissionedChains.find((network) => network.chain === chain)
 }

@@ -5,6 +5,8 @@ import {
   SupportedChain,
   SupportedTechnology,
   web3Providers,
+  ChainType,
+  ChainFamily,
 } from "@config/index.ts"
 import { toQuantity } from "ethers"
 import referenceChains from "src/scripts/reference/chains.json" with { type: "json" }
@@ -77,6 +79,40 @@ export const getTitle = (supportedChain: SupportedChain) => {
   return chains[technology]?.chains[supportedChain]?.title
 }
 
+export type ChainTypeAndFamily = {
+  chainType: ChainType
+  chainFamily: ChainFamily
+}
+
+export const getChainTypeAndFamily = (supportedChain: SupportedChain): ChainTypeAndFamily => {
+  const technology = chainToTechnology[supportedChain]
+  if (!technology) {
+    throw new Error(`Technology not found for chain: ${supportedChain}`)
+  }
+
+  const chainType = chains[technology]?.chainType
+  if (!chainType) {
+    throw new Error(`Chain type not found for technology: ${technology}`)
+  }
+
+  let chainFamily: ChainFamily
+  switch (chainType) {
+    case "evm":
+      chainFamily = "evm"
+      break
+    case "aptos":
+      chainFamily = "mvm"
+      break
+    case "solana":
+      chainFamily = "svm"
+      break
+    default:
+      throw new Error(`Unknown chain type: ${chainType}`)
+  }
+
+  return { chainType, chainFamily }
+}
+
 /**
  * Transforms a token name according to the following rules:
  * 1. Convert to lowercase
@@ -96,9 +132,11 @@ const transformTokenName = (token: string): string => {
     .replace(/\+/g, "%2B") // Step 3: Replace plus signs with %2B
 }
 
-export const getTokenIconUrl = (token: string) => {
-  if (!token) return
-  return `https://d2f70xi62kby8n.cloudfront.net/tokens/${transformTokenName(token)}.webp?auto=compress%2Cformat`
+export const getTokenIconUrl = (token: string, size = 40) => {
+  if (!token) return ""
+  // Request appropriately sized images from CloudFront
+  // For 40x40 display, request 80x80 for retina displays (2x)
+  return `https://d2f70xi62kby8n.cloudfront.net/tokens/${transformTokenName(token)}.webp?auto=compress%2Cformat&q=60&w=${size}&h=${size}&fit=cover`
 }
 
 export const fallbackTokenIconUrl = "/assets/icons/generic-token.svg"
@@ -303,9 +341,9 @@ export const directoryToSupportedChain = (chainInRdd: string): SupportedChain =>
     case "berachain-testnet-bartio":
       return "BERACHAIN_BARTIO"
     case "hyperliquid-mainnet":
-      return "HYPERLIQUID_MAINNET"
+      return "HYPEREVM_MAINNET"
     case "hyperliquid-testnet":
-      return "HYPERLIQUID_TESTNET"
+      return "HYPEREVM_TESTNET"
     case "bitcoin-testnet-merlin":
       return "MERLIN_TESTNET"
     case "bitcoin-merlin-mainnet":
@@ -338,26 +376,30 @@ export const directoryToSupportedChain = (chainInRdd: string): SupportedChain =>
       return "CRONOS_ZKEVM_TESTNET"
     case "cronos-zkevm-mainnet":
       return "CRONOS_ZKEVM_MAINNET"
-    case "0g-testnet-newton":
-      return "0G_NEWTON_TESTNET"
+    case "0g-testnet-galileo":
+      return "0G_GALILEO_TESTNET"
     case "megaeth-testnet":
       return "MEGAETH_TESTNET"
     case "mind-testnet":
       return "MIND_NETWORK_TESTNET"
     case "mind-mainnet":
       return "MIND_NETWORK_MAINNET"
-    case "taiko-mainnet":
+    case "ethereum-mainnet-taiko-1":
       return "TAIKO_MAINNET"
-    case "taiko-testnet":
-      return "TAIKO_TESTNET"
-    case "plume-testnet":
-      return "PLUME_TESTNET"
+    case "ethereum-testnet-holesky-taiko-1":
+      return "TAIKO_HEKLA"
+    case "plume-testnet-sepolia":
+      return "PLUME_SEPOLIA"
     case "plume-mainnet":
       return "PLUME_MAINNET"
+    case "solana-devnet":
+      return "SOLANA_DEVNET"
+    case "solana-mainnet":
+      return "SOLANA_MAINNET"
     case "tron-mainnetTRON_MAINNET":
       return "TRON_MAINNET"
-    case "tron-testnet":
-      return "TRON_TESTNET"
+    case "tron-testnet-shasta-evm":
+      return "TRON_SHASTA"
     case "abstract-mainnet":
       return "ABSTRACT_MAINNET"
     case "abstract-testnet":
@@ -384,6 +426,36 @@ export const directoryToSupportedChain = (chainInRdd: string): SupportedChain =>
       return "METAL_TESTNET"
     case "ethereum-testnet-sepolia-lisk-1":
       return "LISK_TESTNET"
+    case "rootstock-mainnet":
+      return "ROOTSTOCK_MAINNET"
+    case "bitcoin-testnet-rootstock":
+      return "ROOTSTOCK_TESTNET"
+    case "gravity-mainnet":
+      return "GRAVITY_MAINNET"
+    case "gravity-testnet":
+      return "GRAVITY_TESTNET"
+    case "etherlink-mainnet":
+      return "ETHERLINK_MAINNET"
+    case "etherlink-testnet":
+      return "ETHERLINK_TESTNET"
+    case "binance-smart-chain-mainnet-opbnb-1":
+      return "OPBNB_MAINNET"
+    case "binance-smart-chain-testnet-opbnb-1":
+      return "OPBNB_TESTNET"
+    case "janction-mainnet":
+      return "JANCTION_MAINNET"
+    case "janction-testnet-sepolia":
+      return "JANCTION_TESTNET"
+    case "neox-mainnet":
+      return "NEO_X_MAINNET"
+    case "neox-testnet-t4":
+      return "NEO_X_TESTNET"
+    case "polygon-mainnet-katana":
+      return "KATANA_MAINNET"
+    case "polygon-testnet-tatara":
+      return "KATANA_TATARA"
+    case "bitcoin-mainnet-botanix":
+      return "BOTANIX_MAINNET"
     default:
       throw Error(`Chain not found ${chainInRdd}`)
   }
@@ -545,9 +617,9 @@ export const supportedChainToChainInRdd = (supportedChain: SupportedChain): stri
       return "berachain-mainnet"
     case "BERACHAIN_BARTIO":
       return "berachain-testnet-bartio"
-    case "HYPERLIQUID_MAINNET":
+    case "HYPEREVM_MAINNET":
       return "hyperliquid-mainnet"
-    case "HYPERLIQUID_TESTNET":
+    case "HYPEREVM_TESTNET":
       return "hyperliquid-testnet"
     case "MERLIN_TESTNET":
       return "bitcoin-testnet-merlin"
@@ -581,8 +653,8 @@ export const supportedChainToChainInRdd = (supportedChain: SupportedChain): stri
       return "cronos-zkevm-testnet-sepolia"
     case "CRONOS_ZKEVM_MAINNET":
       return "cronos-zkevm-mainnet"
-    case "0G_NEWTON_TESTNET":
-      return "0g-testnet-newton"
+    case "0G_GALILEO_TESTNET":
+      return "0g-testnet-galileo"
     case "MEGAETH_TESTNET":
       return "megaeth-testnet"
     case "MIND_NETWORK_TESTNET":
@@ -590,17 +662,21 @@ export const supportedChainToChainInRdd = (supportedChain: SupportedChain): stri
     case "MIND_NETWORK_MAINNET":
       return "mind-mainnet"
     case "TAIKO_MAINNET":
-      return "taiko-mainnet"
-    case "TAIKO_TESTNET":
-      return "taiko-testnet"
-    case "PLUME_TESTNET":
-      return "plume-testnet"
+      return "ethereum-mainnet-taiko-1"
+    case "TAIKO_HEKLA":
+      return "ethereum-testnet-holesky-taiko-1"
+    case "PLUME_SEPOLIA":
+      return "plume-testnet-sepolia"
     case "PLUME_MAINNET":
       return "plume-mainnet"
+    case "SOLANA_DEVNET":
+      return "solana-devnet"
+    case "SOLANA_MAINNET":
+      return "solana-mainnet"
     case "TRON_MAINNET":
       return "tron-mainnet"
-    case "TRON_TESTNET":
-      return "tron-testnet"
+    case "TRON_SHASTA":
+      return "tron-testnet-shasta-evm"
     case "ABSTRACT_MAINNET":
       return "abstract-mainnet"
     case "ABSTRACT_TESTNET":
@@ -625,6 +701,36 @@ export const supportedChainToChainInRdd = (supportedChain: SupportedChain): stri
       return "metal-mainnet"
     case "METAL_TESTNET":
       return "metal-testnet"
+    case "ROOTSTOCK_MAINNET":
+      return "rootstock-mainnet"
+    case "ROOTSTOCK_TESTNET":
+      return "bitcoin-testnet-rootstock"
+    case "GRAVITY_MAINNET":
+      return "gravity-mainnet"
+    case "GRAVITY_TESTNET":
+      return "gravity-testnet"
+    case "ETHERLINK_MAINNET":
+      return "etherlink-mainnet"
+    case "ETHERLINK_TESTNET":
+      return "etherlink-testnet"
+    case "OPBNB_MAINNET":
+      return "binance-smart-chain-mainnet-opbnb-1"
+    case "OPBNB_TESTNET":
+      return "binance-smart-chain-testnet-opbnb-1"
+    case "JANCTION_MAINNET":
+      return "janction-mainnet"
+    case "JANCTION_TESTNET":
+      return "janction-testnet-sepolia"
+    case "NEO_X_MAINNET":
+      return "neox-mainnet"
+    case "NEO_X_TESTNET":
+      return "neox-testnet-t4"
+    case "KATANA_MAINNET":
+      return "polygon-mainnet-katana"
+    case "KATANA_TATARA":
+      return "polygon-testnet-tatara"
+    case "BOTANIX_MAINNET":
+      return "bitcoin-mainnet-botanix"
     default:
       throw Error(`Chain not found ${supportedChain}`)
   }

@@ -1,4 +1,28 @@
 {
+  "0g-testnet-galileo": {
+    "armProxy": {
+      "address": "0x83eBE7Ceb4916C3Cb86662f65b353E4324390059",
+      "version": "1.5.0"
+    },
+    "chainSelector": "2131427466778448014",
+    "feeTokens": ["LINK", "OG"],
+    "registryModule": {
+      "address": "0xf1C53C1f9d0e5872a454Da43E6dbC93d019325e1",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x5c21Bb4Bd151Bd6Fa2E6d7d1b63B83485529Cdb4",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0xE75f53017a840d761b44aaa83AAf5cdEb0760733",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0xF60CF5EAb0d8249F872056E0F236F58AcF61fF89",
+      "version": "1.5.1"
+    }
+  },
   "abstract-testnet": {
     "armProxy": {
       "address": "0xDcF391514C1ede0B8629A45Da710d3D7228B543C",
@@ -91,6 +115,30 @@
       "version": "1.5.1"
     }
   },
+  "binance-smart-chain-testnet-opbnb-1": {
+    "armProxy": {
+      "address": "0xfd203BE5303939fA8514A3D9CDe38e31877317B7",
+      "version": "1.5.0"
+    },
+    "chainSelector": "13274425992935471758",
+    "feeTokens": ["LINK", "WTBNB"],
+    "registryModule": {
+      "address": "0xa100aE3f139c388D06665B9f883faB52b9e0027E",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0xD9182959D9771cc77e228cB3caFe671f45A37630",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x1fF7474b42f8e9B7353dd90F8C020f738f7Fc452",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0x299B4e4D7A4063Dc1AbcB1aab4bF54A3B8265Dd7",
+      "version": "1.5.1"
+    }
+  },
   "bitcoin-testnet-bitlayer-1": {
     "armProxy": {
       "address": "0xdB44738b1DD21E05e3c56ecD73701daC2c793c0D",
@@ -129,6 +177,10 @@
     "tokenAdminRegistry": {
       "address": "0xd86b92de626aD63db80AF78B54e5739b6aC8b099",
       "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0x150869eac5C58d3655f860C4316107fB626244d0",
+      "version": "1.5.1"
     }
   },
   "bitcoin-testnet-bsquared-1": {
@@ -175,6 +227,30 @@
       "version": "1.5.0"
     }
   },
+  "bitcoin-testnet-rootstock": {
+    "armProxy": {
+      "address": "0x2c78A454169241ddCa342BED991B5E4222C0bd0D",
+      "version": "1.5.0"
+    },
+    "chainSelector": "8953668971247136127",
+    "feeTokens": ["LINK", "WRBTC"],
+    "registryModule": {
+      "address": "0xdC6D648C595619FF1ef07fFa62ECc916F1D708d6",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0xfEE82327fC68cE497283159Eb724Ba7427b097e3",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x18825F888230922CdAdA6C7c4AaE70bDbfdF01Ab",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0x096D327E64342056c3f656C5Da349C9b3cC93DFF",
+      "version": "1.5.1"
+    }
+  },
   "bitcoin-testnet-sepolia-bob-1": {
     "armProxy": {
       "address": "0xD642e08eeF81bb55B8282701234659A3233E2145",
@@ -210,6 +286,7 @@
       "address": "0x763685240370758c5ac6C5F7c22AB36684c0570E",
       "version": "1.5.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0xE1053aE1857476f36A3C62580FF9b016E8EE8F6f",
       "version": "1.2.0"
@@ -351,6 +428,30 @@
       "version": "1.5.0"
     }
   },
+  "ethereum-testnet-holesky-taiko-1": {
+    "armProxy": {
+      "address": "0xF3E5e253164B60109db668ef7Eba6f9813F8A761",
+      "version": "1.5.0"
+    },
+    "chainSelector": "7248756420937879088",
+    "feeTokens": ["LINK", "WETH"],
+    "registryModule": {
+      "address": "0xBB33E6d7A454843204Fd0ae53fdbf2535A993C10",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x07a2b9BB0456a7e999B61ca8F166ADDF5878F468",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0xa089c6A73e8c2EE98cC96bF99A8b6aE687e715DF",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0x4d8dC062cC00e19E09137191A58848aaef7eF7cE",
+      "version": "1.5.1"
+    }
+  },
   "ethereum-testnet-sepolia": {
     "armProxy": {
       "address": "0xba3f6251de62dED61Ff98590cB2fDf6871FbB991",
@@ -362,6 +463,7 @@
       "address": "0x62e731218d0D47305aba2BE3751E7EE9E5520790",
       "version": "1.5.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59",
       "version": "1.2.0"
@@ -410,6 +512,7 @@
       "address": "0xE625f0b8b0Ac86946035a7729Aba124c8A64cf69",
       "version": "1.5.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165",
       "version": "1.2.0"
@@ -434,6 +537,7 @@
       "address": "0x8A55C61227f26a3e2f217842eCF20b52007bAaBe",
       "version": "1.5.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0xD3b06cEbF099CE7DA4AcCf578aaebFDBd6e88a93",
       "version": "1.2.0"
@@ -666,6 +770,7 @@
       "address": "0x49c4ba01dc6F5090f9df43Ab8F79449Db91A0CBB",
       "version": "1.5.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0x114A20A10b43D4115e5aeef7345a1A71d2a60C57",
       "version": "1.2.0"
@@ -871,6 +976,27 @@
       "version": "1.5.1"
     }
   },
+  "etherlink-testnet": {
+    "armProxy": {
+      "address": "0xEC7088f7952ba58f268E25AC3868DF92bF462AEf",
+      "version": "1.0.0"
+    },
+    "chainSelector": "1910019406958449359",
+    "feeTokens": ["LINK", "WXTZ"],
+    "registryModule": {
+      "address": "0xffA67C26885F6e98c010ecaD7C750D5DbdF5648d",
+      "version": "1.6.0"
+    },
+    "rmnPermeable": false,
+    "router": {
+      "address": "0xa1312a58873fb9a16008E259c3eB972038ba46D9",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x7A635FdfDC70469B6e8796Bd7dEeB3f24fd4f949",
+      "version": "1.5.0"
+    }
+  },
   "hedera-testnet": {
     "armProxy": {
       "address": "0x0Df355104424BABfb2404600A4258CfE140a78Cf",
@@ -933,6 +1059,30 @@
     "tokenAdminRegistry": {
       "address": "0x3A849a05a590FeaEf26c2d425241A2BF29307161",
       "version": "1.5.0"
+    }
+  },
+  "janction-testnet-sepolia": {
+    "armProxy": {
+      "address": "0x2b78139A0580592e2dfa55138c1F2eA5376b1ab4",
+      "version": "1.5.0"
+    },
+    "chainSelector": "5059197667603797935",
+    "feeTokens": ["LINK", "WETH"],
+    "registryModule": {
+      "address": "0x95964Bf01b642Ce6Aa8996cC517B9a140fEb1E9f",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x6ddAFdf8bA76AFED73d6e7B599adDE014fA293bC",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x869D08b51D16869899d16a0Ba3eAda58521f8854",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0x053F1947Bb2e69a73C06276c8ec5859D61619857",
+      "version": "1.5.1"
     }
   },
   "megaeth-testnet": {
@@ -1047,6 +1197,54 @@
       "version": "1.5.0"
     }
   },
+  "neox-testnet-t4": {
+    "armProxy": {
+      "address": "0xc707eecF5CD423BbeaAc55fb1D11a7FB74bf4a4b",
+      "version": "1.5.0"
+    },
+    "chainSelector": "2217764097022649312",
+    "feeTokens": ["LINK", "WGAS"],
+    "registryModule": {
+      "address": "0x310bbE0aF2fBb306D7F0A8A2d8AbeA86DF10FDc6",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x609747816B6C237d5C4960065BC11d2F0DE752A6",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x9F7F6002b5f6F4d5a53BFDf380435fa18Ae2Dc13",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0xE4a0145208b0A64E3fA056da896Fbbfa43b19d49",
+      "version": "1.5.1"
+    }
+  },
+  "plume-testnet-sepolia": {
+    "armProxy": {
+      "address": "0xAa3ae5481EE445711252131f1516922D0962916A",
+      "version": "1.5.0"
+    },
+    "chainSelector": "13874588925447303949",
+    "feeTokens": ["LINK", "WPLUME"],
+    "registryModule": {
+      "address": "0x1888ec490a6d3F9B240cA76b0eEFf8Eef504247b",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x5e5Fd4720E1CE826138D043aF578D69f48af502F",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0x855cF0d18A0BeBEDA7c1CD2F943686120cCCC6bd",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0x0c43bb1A15A1FF1CbDdFF2B8F9518C1B0d3B17E2",
+      "version": "1.5.1"
+    }
+  },
   "polkadot-testnet-astar-shibuya": {
     "armProxy": {
       "address": "0xc96ac0533F240ad52694391583267ACAbc479C07",
@@ -1092,6 +1290,30 @@
     },
     "tokenPoolFactory": {
       "address": "0xff170aD8f1d86eFAC90CA7a2E1204bA64aC5e0f9",
+      "version": "1.5.1"
+    }
+  },
+  "polygon-testnet-tatara": {
+    "armProxy": {
+      "address": "0xAD8BeA8bC5Fe468Dc1F7BbEce59A86584407255f",
+      "version": "1.5.0"
+    },
+    "chainSelector": "9090863410735740267",
+    "feeTokens": ["LINK", "WETH"],
+    "registryModule": {
+      "address": "0x32E18611aeb4e42d931dF838fd4e019CC6B2A674",
+      "version": "1.5.0"
+    },
+    "router": {
+      "address": "0x1dF1fe714A376f248d51AAB826C3feeC379e80fC",
+      "version": "1.2.0"
+    },
+    "tokenAdminRegistry": {
+      "address": "0xFE50B8Cd5a07E23550fE6b3B138408936c10EC29",
+      "version": "1.5.0"
+    },
+    "tokenPoolFactory": {
+      "address": "0xB2D5008f6d12c795c435A3B8211A55E409cdbFeB",
       "version": "1.5.1"
     }
   },
@@ -1163,10 +1385,29 @@
       "version": "1.5.1"
     }
   },
+  "solana-devnet": {
+    "armProxy": {
+      "address": "RmnXLft1mSEwDgMKu2okYuHkiazxntFFcZFrrcXxYg7",
+      "version": "V1"
+    },
+    "chainSelector": "16423721717087811551",
+    "feeQuoter": "FeeQPGkKDeRV1MgoYfMH6L8o3KeuYjwUZrgn4LRKfjHi",
+    "feeTokens": ["LINK", "WSOL"],
+    "poolPrograms": {
+      "BurnMintTokenPool": "41FGToCmdaWa1dgZLKFAjvmx6e6AjVTX7SVRibvsMGVB",
+      "CCTPTokenPool": "CCiTPESGEevd7TBU8EGBKrcxuRq7jx3YtW6tPidnscaZ",
+      "LockReleaseTokenPool": "8eqh8wppT9c5rw4ERqNCffvU6cNFJWff9WmkcYtmGiqC"
+    },
+    "rmnPermeable": false,
+    "router": {
+      "address": "Ccip842gzYHhvdDkSyi2YVCoAWPbYJoApMFzSxQroE9C",
+      "version": "V1"
+    }
+  },
   "sonic-testnet-blaze": {
     "armProxy": {
       "address": "0xD3166538bd1132329d25E34B240E4D44922A07F0",
-      "version": "1.5.0"
+      "version": "1.0.0"
     },
     "chainSelector": "3676871237479449268",
     "feeTokens": ["LINK", "WS"],
@@ -1174,6 +1415,7 @@
       "address": "0xdcF170767E0370CEB4E1fD33C79b32909C50e30E",
       "version": "1.5.0"
     },
+    "rmnPermeable": false,
     "router": {
       "address": "0x2fBd4659774D468Db5ca5bacE37869905d8EfA34",
       "version": "1.2.0"
